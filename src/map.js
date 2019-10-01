@@ -24,16 +24,16 @@ const Features = {
 
   point: function (lngLat, i) {
     return {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
+      'type': 'Feature',
+      'geometry': {
+        'type': 'Point',
+        'coordinates': [
           lngLat.lng,
           lngLat.lat
         ]
       },
-      "properties": {
-        "id": i
+      'properties': {
+        'id': i
       }
     }
   },
@@ -50,14 +50,28 @@ class MapDirector {
     this.geolocateControl = new mapboxgl.GeolocateControl(Features.geolocateControl());
     this.map.addControl(this.geolocateControl);
 
-    // this.map.on("load", function () { self.init(); });
+    $.ajax({
+      url: 'https://layer.bicyclesharing.net/map/v1/nyc/stations',
+      type: 'GET',
+      xhrFields: {
+          withCredentials: true
+      },
+      success: function (response) {
+          console.log({response});
+      },
+      error: function (xhr, status) {
+          console.log({xhr, status});
+      }
+  });
+
+    // this.map.on('load', function () { self.init(); });
   }
 
   getPosition() {
     let mapBounds = this.map.getBounds();
     let bounds = {
-      "min": mapBounds._sw,
-      "max": mapBounds._ne
+      'min': mapBounds._sw,
+      'max': mapBounds._ne
     };
     let center = this.map.getCenter();
     let zoom = this.map.getZoom();
@@ -70,6 +84,6 @@ class MapDirector {
 
 }
 
-window.onload = function() {
-  const map = new MapDirector(0,0,2);
+window.onload = function () {
+  const map = new MapDirector(-73.9821905, 40.7349932, 12);
 }
