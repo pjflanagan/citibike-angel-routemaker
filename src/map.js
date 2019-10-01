@@ -50,19 +50,16 @@ class MapDirector {
     this.geolocateControl = new mapboxgl.GeolocateControl(Features.geolocateControl());
     this.map.addControl(this.geolocateControl);
 
-    $.ajax({
-      url: 'https://layer.bicyclesharing.net/map/v1/nyc/stations',
-      type: 'GET',
-      xhrFields: {
-          withCredentials: true
-      },
-      success: function (response) {
-          console.log({response});
-      },
-      error: function (xhr, status) {
-          console.log({xhr, status});
-      }
-  });
+    let stationsGeoJSON;
+    fetch('https://layer.bicyclesharing.net/map/v1/nyc/stations', {
+      method: 'GET',
+      mode: 'no-cors',
+      credentials: 'omit',
+      referrer: 'client'
+    })
+      .then((response) => {
+        console.log(response);
+      });
 
     // this.map.on('load', function () { self.init(); });
   }
